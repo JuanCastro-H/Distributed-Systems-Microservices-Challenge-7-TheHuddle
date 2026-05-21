@@ -15,6 +15,8 @@ from sqlalchemy import Boolean
 # --- Obtener La Clase Madre para las tablas ---
 from auth_service.app.database.base import Base
 
+
+
 # --- Crear Clase User para la tabla Usario ---
 class User(Base): # Sig: "Esta clase pertenece al sistema ORM"
 

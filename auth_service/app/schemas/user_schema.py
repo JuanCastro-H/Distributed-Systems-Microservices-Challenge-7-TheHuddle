@@ -13,6 +13,8 @@ from pydantic import BaseModel # Valida los datos y devuelve codigos de errores 
 
 from pydantic import EmailStr # Formato para validar Emails.
 
+
+
 # --- Schema para validacuion de datos de entrada --- 
 class UserCreate(BaseModel): # En caso de error automaticamente salta: 422 Unprocessable Entity
 
