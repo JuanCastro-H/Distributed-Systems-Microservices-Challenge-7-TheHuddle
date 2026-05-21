@@ -50,3 +50,22 @@ class UserResponse(BaseModel):
 
         # Convertir objetos ORM SQL.. a Pydantic
         from_attributes = True
+
+
+# --- Schema para login de usuario ---
+class UserLogin(BaseModel):
+
+    email: EmailStr
+
+    password: str
+
+
+# --- Schema de respuesta JWT ---
+class Token(BaseModel):
+
+    # --- Token ---
+    access_token: str
+
+    # --- Tipo de autenticacion ---
+    token_type: str
+    
