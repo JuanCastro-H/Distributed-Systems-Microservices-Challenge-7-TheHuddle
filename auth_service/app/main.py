@@ -3,7 +3,15 @@
 # ===================================
 
 # --- Obtener Framework ---
-from fastapi import FastAPI 
+from fastapi import FastAPI
+
+from app.database.connection import engine
+from app.database.base import Base
+
+from auth_service.app.models.user_model import User
+
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
