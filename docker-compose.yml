@@ -34,8 +34,7 @@ services:
 
     volumes:
       - auth_postgres_data:/var/lib/postgresql/data
-
-
+  
   catalog_service:
 
     build:
@@ -80,6 +79,8 @@ services:
 
     container_name: watchlist_service
 
+    restart: always
+
     ports:
       - "8003:8000"
 
@@ -109,6 +110,7 @@ services:
       - watchlist_postgres_data:/var/lib/postgresql/data
 
 
+
 volumes:
 
   auth_postgres_data:
@@ -116,3 +118,5 @@ volumes:
   catalog_postgres_data:
 
   watchlist_postgres_data:
+
+
