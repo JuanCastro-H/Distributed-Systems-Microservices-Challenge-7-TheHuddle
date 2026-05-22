@@ -89,7 +89,7 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
 
 
 # ============================================ 
-# RUTA PARA 
+# RUTA PARA VALIDAR JWT
 # ============================================ 
 
 @router.get("/me")
