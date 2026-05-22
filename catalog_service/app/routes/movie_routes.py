@@ -19,6 +19,8 @@ from app.database.connection import SessionLocal
 # --- Traer jwt ---
 from app.core.security import verify_token
 
+from catalog_service.app.schemas.movie_schema import MovieUpdate
+
 # --- Inicializar Router ---
 router = APIRouter(
     prefix="/catalog",
@@ -116,3 +118,36 @@ def delete_movie(
     return {
         "message": "Movie deleted successfully"
     }
+
+
+@router.put(
+    "/movies/{movie_id}",
+    response_model=MovieResponse
+)
+def update_movie(
+    movie_id: int,
+    movie_data: MovieUpdate,
+    user_id: str = Depends(verify_token),
+    db: Session = Depends(get_db)
+):
+
+    movie = db.query(Movie).filter(
+        Movie.id == movie_id
+    ).first()
+
+    if not movie:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Movie not found"
+        )
+
+    movie.title = movie_data.title
+    movie.genre = movie_data.genre
+    movie.rating = movie_data.rating
+
+    db.commit()
+
+    db.refresh(movie)
+
+    return movie
