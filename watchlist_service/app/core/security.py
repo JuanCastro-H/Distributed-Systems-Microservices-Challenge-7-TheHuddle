@@ -1,11 +1,20 @@
-import os
+# ====================================
+# MODULO ENCARGADO DE LA SEGURIDAD 
+# ====================================
+
+# ===================================
+# Importaciones Y Librerias
+# ===================================
+
+import os  # Interactuar con el OS
 
 # --- jwt y manejo de erroer ---
 from jose import jwt
 from jose import JWTError
 
-# --- leer env ---
-from dotenv import load_dotenv
+
+from dotenv import load_dotenv          # Leer archivo env.
+from pathlib import Path                # Manejar rutas.
 
 # --- manejo de excepcciones y dependencias
 from fastapi import Depends
@@ -15,16 +24,26 @@ from fastapi import HTTPException
 from fastapi.security import HTTPBearer
 from fastapi.security import HTTPAuthorizationCredentials
 
-# --- Cargar variables globales ---
-load_dotenv()
 
 
+# --- Obtener ruta absoluta del archivo actual ---
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+# --- Construir ruta al .env ---
+env_path = BASE_DIR / ".env"
+
+# --- Leer Variables de entorno ---
+load_dotenv(env_path)
+
+
+# --- Obtener clave secretaa ---
 SECRET_KEY = os.getenv("SECRET_KEY")
 
+# --- Obtener algoritmo ---
 ALGORITHM = os.getenv("ALGORITHM")
 
-
-security = HTTPBearer()
+# --- Autenticacion bearer ---
+security = HTTPBearer() 
 
 
 # --- Verificar Token ---
