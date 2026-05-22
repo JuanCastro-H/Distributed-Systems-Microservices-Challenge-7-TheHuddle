@@ -24,6 +24,8 @@ from auth_service.app.database.dependencies import get_db
 # --- Obtener servicio de autenticacion ---
 from auth_service.app.services.auth_service import AuthService
 
+from auth_service.app.schemas.user_schema import UserLogin
+from auth_service.app.schemas.user_schema import Token
 
 
 # --- Crear Router ---
@@ -56,3 +58,29 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
     
     # --- Retornar usuario ---
     return user
+
+
+# ============================================ 
+# RUTA PARA 
+# ============================================ 
+
+@router.post("/login", response_model=Token)
+def login(user_data: UserLogin, db: Session = Depends(get_db)):
+
+    token = AuthService.login_user(
+        db,
+        user_data.email,
+        user_data.password
+    )
+
+    if not token:
+
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid credentials"
+        )
+    
+    return {
+        "access_token":token,
+        "token_type": "bearer"
+    }
