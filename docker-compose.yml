@@ -37,8 +37,8 @@ services:
   catalog_service:
 
     build:
-      context: .
-      dockerfile: catalog_service/Dockerfile
+      context: ./catalog_service
+      dockerfile: Dockerfile
 
     container_name: catalog_service
 
