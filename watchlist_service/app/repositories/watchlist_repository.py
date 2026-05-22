@@ -38,6 +38,7 @@ class WatchlistRepository:
         ).all()
     
 
+    # --- Buscar
     @staticmethod
     def get_watchlist_item(
         db: Session,
@@ -50,7 +51,7 @@ class WatchlistRepository:
             Watchlist.movie_id == movie_id
         ).first()
 
-
+    # --- Eliminar 
     @staticmethod
     def delete_watchlist_item(
         db: Session,

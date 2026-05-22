@@ -55,3 +55,33 @@ class WatchlistService:
             db,
             user_id
         )
+    
+
+    @staticmethod
+    def remove_movie_from_watchlist(
+        db: Session,
+        user_id: int,
+        movie_id: int
+    ):
+
+        watchlist_item = WatchlistRepository.get_watchlist_item(
+            db,
+            user_id,
+            movie_id
+        )
+
+        if not watchlist_item:
+
+            raise HTTPException(
+                status_code=404,
+                detail="Movie not found in watchlist"
+            )
+
+        WatchlistRepository.delete_watchlist_item(
+            db,
+            watchlist_item
+        )
+
+        return {
+            "message": "Movie removed from watchlist"
+        }
