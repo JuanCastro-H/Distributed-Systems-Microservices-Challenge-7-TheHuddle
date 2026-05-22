@@ -19,10 +19,7 @@ router = APIRouter(
 )
 
 
-@router.post(
-    "",
-    response_model=WatchlistResponse
-)
+@router.post("",response_model=WatchlistResponse)
 def add_to_watchlist(
     watchlist_data: WatchlistCreate,
     user_id: str = Depends(verify_token),
@@ -33,6 +30,18 @@ def add_to_watchlist(
         db,
         int(user_id),
         watchlist_data.movie_id
+    )
+
+
+@router.get("",response_model=list[WatchlistResponse])
+def get_watchlist(
+    user_id: str = Depends(verify_token),
+    db: Session = Depends(get_db)
+):
+
+    return WatchlistService.get_watchlist(
+        db,
+        int(user_id)
     )
 
 
