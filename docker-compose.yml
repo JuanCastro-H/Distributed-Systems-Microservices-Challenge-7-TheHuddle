@@ -3,8 +3,8 @@ services:
   auth_service:
 
     build:
-      context: .
-      dockerfile: auth_service/Dockerfile
+      context: ./auth_service
+      dockerfile: Dockerfile
 
     container_name: auth_service
 
