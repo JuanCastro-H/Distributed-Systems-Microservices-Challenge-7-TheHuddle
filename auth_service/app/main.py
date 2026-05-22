@@ -6,13 +6,13 @@
 from fastapi import FastAPI 
 
 # --- Traer Base ORM y engine (puente) ---
-from auth_service.app.database.connection import engine
-from auth_service.app.database.base import Base
+from app.database.connection import engine
+from app.database.base import Base
 
 # --- Registrar modelo ORM User en metadata ---
-from auth_service.app.models.user_model import User # Python ejecuta el archivo al importarlo. 
+from app.models.user_model import User # Python ejecuta el archivo al importarlo. 
 
-from auth_service.app.routes.auth_routes import router as auth_router
+from app.routes.auth_routes import router as auth_router
 
 Base.metadata.create_all(bind=engine)
 

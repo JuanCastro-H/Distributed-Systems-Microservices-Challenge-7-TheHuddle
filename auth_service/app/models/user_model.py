@@ -13,7 +13,7 @@ from sqlalchemy import String
 from sqlalchemy import Boolean
 
 # --- Obtener La Clase Madre para las tablas ---
-from auth_service.app.database.base import Base
+from app.database.base import Base
 
 
 

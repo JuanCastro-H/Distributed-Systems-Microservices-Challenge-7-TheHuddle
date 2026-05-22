@@ -7,7 +7,7 @@
 # Importaciones Y Librerias
 # ===================================
 
-from auth_service.app.database.connection import SessionLocal # Plantilla de Sesiones para la base de datos.
+from app.database.connection import SessionLocal # Plantilla de Sesiones para la base de datos.
 
 # --- Crear Session De BD Inyectable ---
 def get_db():

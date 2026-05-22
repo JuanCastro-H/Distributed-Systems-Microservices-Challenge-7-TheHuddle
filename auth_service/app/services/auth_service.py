@@ -10,16 +10,16 @@
 from sqlalchemy.orm import Session
 
 # --- Importar acceso a DB ---
-from auth_service.app.repositories.user_repository import UserRepository
+from app.repositories.user_repository import UserRepository
 
 # --- Importar funcion de Hashing ---
-from auth_service.app.core.security import hash_password
+from app.core.security import hash_password
 
 # --- Funcion para comparar y verificar contrasenha ---
-from auth_service.app.core.security import verify_password
+from app.core.security import verify_password
 
 # --- Generador de tokens ---
-from auth_service.app.core.security import create_access_token
+from app.core.security import create_access_token
 
 
 

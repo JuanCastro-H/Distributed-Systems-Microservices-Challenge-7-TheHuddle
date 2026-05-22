@@ -15,19 +15,19 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 # --- Obtener Schemas Pydantic para validacion y respuestas ---
-from auth_service.app.schemas.user_schema import UserCreate   # Valida el JSON con los datos del usuario recibidos.
-from auth_service.app.schemas.user_schema import UserResponse # Controla JSON que Devolvemos.
+from app.schemas.user_schema import UserCreate   # Valida el JSON con los datos del usuario recibidos.
+from app.schemas.user_schema import UserResponse # Controla JSON que Devolvemos.
 
 # --- Dependencia para crear conexion con DB ---
-from auth_service.app.database.dependencies import get_db 
+from app.database.dependencies import get_db 
 
 # --- Obtener servicio de autenticacion ---
-from auth_service.app.services.auth_service import AuthService
+from app.services.auth_service import AuthService
 
-from auth_service.app.schemas.user_schema import UserLogin
-from auth_service.app.schemas.user_schema import Token
+from app.schemas.user_schema import UserLogin
+from app.schemas.user_schema import Token
 
-from auth_service.app.core.security import verify_token
+from app.core.security import verify_token
 
 
 # --- Crear Router ---

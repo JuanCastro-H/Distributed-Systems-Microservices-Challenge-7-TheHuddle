@@ -11,7 +11,7 @@
 from sqlalchemy.orm import Session # Obtenemos la conexion activa con la BD
 
 # --- Importar modelo de User ---
-from auth_service.app.models.user_model import User
+from app.models.user_model import User
 
 
 # --------------------------------------------
