@@ -27,6 +27,8 @@ from auth_service.app.services.auth_service import AuthService
 from auth_service.app.schemas.user_schema import UserLogin
 from auth_service.app.schemas.user_schema import Token
 
+from auth_service.app.core.security import verify_token
+
 
 # --- Crear Router ---
 router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -84,3 +86,13 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
         "access_token":token,
         "token_type": "bearer"
     }
+
+
+# ============================================ 
+# RUTA PARA 
+# ============================================ 
+
+@router.get("/me")
+def me(user_id: str = Depends(verify_token)):
+
+    return {"user_id": user_id}
