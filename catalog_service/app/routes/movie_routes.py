@@ -60,3 +60,12 @@ def create_movie(
     db.refresh(movie)
 
     return movie
+
+
+# --- Obtener lista de peliculas  cargadas ---
+@router.get("/movies",response_model=list[MovieResponse])
+def get_movies(
+    db: Session = Depends(get_db)
+):
+
+    return db.query(Movie).all()
