@@ -19,7 +19,7 @@ from app.database.connection import SessionLocal
 # --- Traer jwt ---
 from app.core.security import verify_token
 
-from catalog_service.app.schemas.movie_schema import MovieUpdate
+from app.schemas.movie_schema import MovieUpdate
 
 # --- Inicializar Router ---
 router = APIRouter(
