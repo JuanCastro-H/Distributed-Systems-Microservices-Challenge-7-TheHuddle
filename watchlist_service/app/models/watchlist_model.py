@@ -1,9 +1,23 @@
+# ====================================
+# MODULO MODELO WATCHLIST
+# ====================================
+
+# ===================================
+# Importaciones Y Librerias
+# ===================================
+
+# --- Importar columnas y tipos SQL ---
 from sqlalchemy import Column
 from sqlalchemy import Integer
 
+# --- Importar clase base ORM ---
 from app.database.base import Base
 
 
+# ---------------------------------------------
+# MODELO DE WATCHLIST
+# Representa peliculas guardadas por usuarios
+# ---------------------------------------------
 class Watchlist(Base):
 
     __tablename__ = "watchlist"
