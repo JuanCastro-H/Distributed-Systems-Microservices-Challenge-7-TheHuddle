@@ -17,6 +17,7 @@ services:
     depends_on:
       - auth_db
 
+
   auth_db:
 
     image: postgres:16
@@ -33,7 +34,8 @@ services:
 
     volumes:
       - auth_postgres_data:/var/lib/postgresql/data
-  
+
+
   catalog_service:
 
     build:
@@ -70,10 +72,47 @@ services:
       - catalog_postgres_data:/var/lib/postgresql/data
 
 
+  watchlist_service:
+
+    build:
+      context: ./watchlist_service
+      dockerfile: Dockerfile
+
+    container_name: watchlist_service
+
+    ports:
+      - "8003:8000"
+
+    env_file:
+      - ./watchlist_service/.env
+
+    depends_on:
+      - watchlist_db
+      - catalog_service
+
+
+  watchlist_db:
+
+    image: postgres:16
+
+    container_name: watchlist_db
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: watchlist_db
+
+    ports:
+      - "5435:5432"
+
+    volumes:
+      - watchlist_postgres_data:/var/lib/postgresql/data
+
+
 volumes:
 
   auth_postgres_data:
 
   catalog_postgres_data:
 
-
+  watchlist_postgres_data:
