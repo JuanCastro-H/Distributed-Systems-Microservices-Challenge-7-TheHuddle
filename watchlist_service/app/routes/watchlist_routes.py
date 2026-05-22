@@ -45,3 +45,16 @@ def get_watchlist(
     )
 
 
+@router.delete("/{movie_id}")
+def remove_from_watchlist(
+    movie_id: int,
+    user_id: str = Depends(verify_token),
+    db: Session = Depends(get_db)
+):
+
+    return WatchlistService.remove_movie_from_watchlist(
+        db,
+        int(user_id),
+        movie_id
+    )
+
