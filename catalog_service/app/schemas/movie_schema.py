@@ -18,3 +18,14 @@ class MovieResponse(MovieCreate):
     class Config:
 
         from_attributes = True
+
+
+# --- Schema para actualizar una pelicula ---
+
+class MovieUpdate(BaseModel):
+
+    title: str
+
+    genre: str
+
+    rating: float
