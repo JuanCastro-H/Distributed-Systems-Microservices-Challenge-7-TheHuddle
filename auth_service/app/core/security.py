@@ -25,6 +25,13 @@ from jose import JWTError
 # --- Leer archivos env
 from dotenv import load_dotenv
 
+# --- Dependencias y Errores HTTP
+from fastapi import Depends
+from fastapi import HTTPException
+
+# --- Herramienta para extraer el token del header ---
+from fastapi.security import OAuth2PasswordBearer # Se queda con el codigo del JWT.
+
 
 
 # --- Obtener ruta absoluta del archivo actual ---
@@ -44,6 +51,12 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+
+
+# --- Crear extractor de tokens ---
+oauth2_scheme = OAuth2PasswordBearer( #Extraer JWT desde authorization Header con el Sistemaa OAuth2 
+    tokenUrl="/auth/login"
+)
 
 
 # --- Configuracion del contenedor de Hashin ---
@@ -93,3 +106,38 @@ def create_access_token(data: dict):
 
     # --- Devolver JWT ---
     return encoded_jwt
+
+
+# --- Verificar token ---
+def verify_token(token: str = Depends(oauth2_scheme)): # Obtener y validar token desde authorization header.
+
+    try:
+
+        # --- DecodificarJWT ---
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
+        )
+
+        # --- Obtener ID del usuario ---
+        user_id = payload.get("sub")
+
+        # --- Si no  error 401 token invalido ---
+        if not user_id:
+
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid token"
+            )
+        
+        # --- Retornar ID ---
+        return user_id
+    
+    # --- Error si es invalido o expirado ---
+    except JWTError:
+
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid token"
+        )
