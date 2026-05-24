@@ -102,6 +102,8 @@ class HistoryService:
                     "user_id": item.user_id,
                     "movie_id": item.movie_id,
                     "movie_title": movie_data["title"],
+                    "movie_genre": movie_data["genre"],
+                    "movie_rating": movie_data["rating"],
                     "watched_at": item.watched_at
                 })
 
@@ -114,6 +116,8 @@ class HistoryService:
                     "user_id": item.user_id,
                     "movie_id": item.movie_id,
                     "movie_title": "Unavailable",
+                    "movie_genre": "Unavailable",
+                    "movie_rating": 0,
                     "watched_at": item.watched_at
                 })
 
