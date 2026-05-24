@@ -53,3 +53,19 @@ def add_history(
     )
 
 
+
+# -------------------------------------------
+# RUTA PARA OBTENER HISTORIAL POR ID
+# -------------------------------------------
+@router.get("",response_model=list[HistoryResponse])
+def get_history(
+    user_id: str = Depends(verify_token), # Obtener usuario autenticado.
+    db: Session = Depends(get_db)         # Obtener conexion con la BD.
+):
+
+    # --- Retornar historial del usuario ---
+    return HistoryService.get_history(
+        db,
+        int(user_id)
+    )
+
