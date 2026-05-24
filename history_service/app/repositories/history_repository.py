@@ -71,7 +71,7 @@ class HistoryRepository:
 
         return db.query(History).filter(
             History.id == history_id
-        ).first()
+        ).first() # Devuelve el primer resultado o None.
 
 
     # --- Eliminar historial ---
