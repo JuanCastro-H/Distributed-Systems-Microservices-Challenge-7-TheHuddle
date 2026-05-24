@@ -121,9 +121,9 @@ class HistoryService:
         return enriched_history
     
 
-    # --- Eliminar registro del historial ---
+    # --- Eliminar una pelicula del registro del historial ---
     @staticmethod
-    def delete_history(
+    def delete_history( # 
         db: Session,
         user_id: int,
         history_id: int
@@ -162,6 +162,25 @@ class HistoryService:
         # --- Retornar exito de la operacion ---
         return {
             "message": "History deleted"
+        }
+
+
+    # --- Eliminar todo el historial ---
+    @staticmethod
+    def clear_history(
+        db: Session,
+        user_id: int
+    ):
+
+        # --- Eliminar todas las peliculas del historial ---
+        HistoryRepository.delete_all_history(
+            db,
+            user_id
+        )
+
+        # --- Retornar mensaje de exito ---
+        return {
+            "message": "History cleared successfully"
         }
 
 
