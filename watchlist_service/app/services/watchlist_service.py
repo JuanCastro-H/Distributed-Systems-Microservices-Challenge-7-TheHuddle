@@ -85,11 +85,54 @@ class WatchlistService:
         user_id: int
     ):
 
-        # --- Retornar Watchlist de Usuario ---
-        return WatchlistRepository.get_user_watchlist(
+        # --- Obtener peliculas guardadas ---
+        watchlist_items = WatchlistRepository.get_user_watchlist(
             db,
             user_id
         )
+
+        # --- Lista para almacenar watchlist enriquecida ---
+        enriched_watchlist = []
+
+        # --- Recorrer cada pelicula guardada ---
+        for item in watchlist_items:
+            
+            # intentar Obtener informacion detallada de la pelicula ---
+            try:
+                
+                # --- Solicitar la informacion a catalogo ---
+                response = httpx.get(
+                    f"http://catalog_service:8000/catalog/movies/{item.movie_id}"
+                )  
+
+                # --- Parsear json ---
+                movie_data = response.json()
+
+                # --- Cargar pelicula enriquecida ---
+                enriched_watchlist.append({
+                    "id": item.id,
+                    "user_id": item.user_id,
+                    "movie_id": item.movie_id,
+                    "movie_title": movie_data["title"],
+                    "movie_genre": movie_data["genre"],
+                    "movie_rating": movie_data["rating"]
+                })
+
+            # --- Capturar errrores de conexion ---
+            except Exception:
+                
+                # --- Agregar datos basicos si catalogo falla ---
+                enriched_watchlist.append({
+                    "id": item.id,
+                    "user_id": item.user_id,
+                    "movie_id": item.movie_id,
+                    "movie_title": "Unavailable",
+                    "movie_genre": "Unavailable",
+                    "movie_rating": 0
+                })
+
+        # --- Retornar watchlist ---
+        return enriched_watchlist
     
 
     # --- Eliminar pelicula ---
