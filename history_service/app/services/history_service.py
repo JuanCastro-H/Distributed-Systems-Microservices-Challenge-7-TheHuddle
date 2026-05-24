@@ -78,5 +78,49 @@ class HistoryService:
             db,
             user_id
         )
+    
+
+    # --- Eliminar registro del historial ---
+    @staticmethod
+    def delete_history(
+        db: Session,
+        user_id: int,
+        history_id: int
+    ):
+
+        # --- Buscar historial por ID en la BD---
+        history = HistoryRepository.get_history_by_id(
+            db,
+            history_id
+        )
+
+        # --- Si no existe ---
+        if not history:
+
+            # --- Devolver error 404 ---
+            raise HTTPException(
+                status_code=404,
+                detail="History not found"
+            )
+
+        # --- Verificar propietario por el ID ---
+        if history.user_id != user_id: # Si quien quiere eliminar el historial no es el propietario.
+            
+            # --- Devolver error 403 de permiso ---
+            raise HTTPException(
+                status_code=403,
+                detail="Forbidden"
+            )
+
+        # --- Eliminar historial ---
+        HistoryRepository.delete_history(
+            db,
+            history
+        )
+
+        # --- Retornar exito de la operacion ---
+        return {
+            "message": "History deleted"
+        }
 
 
