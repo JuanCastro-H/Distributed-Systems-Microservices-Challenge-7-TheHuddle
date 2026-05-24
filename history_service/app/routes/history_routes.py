@@ -70,9 +70,9 @@ def get_history(
     )
 
 
-# -------------------------------------------
-# RUTA PARA ELIMINAR HISTORIAL
-# -------------------------------------------
+# ---------------------------------------------
+# RUTA PARA ELIMINAR UNA PELICULA DEL HISTORIAL
+# ---------------------------------------------
 @router.delete("/{history_id}")
 def delete_history(
     history_id: int,
@@ -85,4 +85,21 @@ def delete_history(
         db,
         int(user_id),
         history_id
+    )
+
+
+
+# -------------------------------------------
+# RUTA PARA ELIMINAR TOD0 EL HISTORIAL
+# -------------------------------------------
+@router.delete("")
+def clear_history(
+    user_id: str = Depends(verify_token),
+    db: Session = Depends(get_db)
+):
+
+    # --- Retornar Historial limpio ---
+    return HistoryService.clear_history(
+        db,
+        int(user_id)
     )
