@@ -22,6 +22,12 @@ class WatchlistResponse(BaseModel):
 
     movie_id: int
 
+    movie_title: str
+
+    movie_genre: str
+
+    movie_rating: float
+
     class Config:
 
         from_attributes = True
