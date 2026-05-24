@@ -55,7 +55,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 # --- Crear extractor de tokens ---
 oauth2_scheme = OAuth2PasswordBearer( #Extraer JWT desde authorization Header con el Sistemaa OAuth2 
-    tokenUrl="/auth/login"
+    tokenUrl="auth/login"
 )
 
 

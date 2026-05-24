@@ -29,6 +29,10 @@ from app.schemas.user_schema import Token
 
 from app.core.security import verify_token
 
+from fastapi.security import OAuth2PasswordRequestForm
+from app.models.user_model import User
+from app.core.security import verify_password
+from app.core.security import create_access_token
 
 # --- Crear Router ---
 router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -63,30 +67,51 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
 
 
 # ============================================ 
-# RUTA PARA 
+# RUTA PARA INICIAR SESION Y GENERAR JWT
 # ============================================ 
 
-@router.post("/login", response_model=Token)
-def login(user_data: UserLogin, db: Session = Depends(get_db)):
-
-    token = AuthService.login_user(
-        db,
-        user_data.email,
-        user_data.password
-    )
-
-    if not token:
-
+@router.post("/login")
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(), # Obtener credenciales del formulario.
+    db: Session = Depends(get_db)                                    
+):
+    
+    # --- Buscar usuario por email ---
+    user = db.query(User).filter(
+        User.email == form_data.username # El email se envia dentro de la sesion username.
+    ).first()
+    
+    # --- Si no existe ---
+    if not user:
+        
+        # --- Devolver error 401 ---
         raise HTTPException(
             status_code=401,
             detail="Invalid credentials"
         )
-    
+
+    # --- Verificar contrasenha hasheando y comparando ---
+    if not verify_password(
+        form_data.password,
+        user.hashed_password
+    ):
+
+        # --- Si sale mal retornar error 401 ---
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid credentials"
+        )
+
+    # -- Generar JWT con ID del usuario ---
+    access_token = create_access_token(
+        data={"sub": str(user.id)}
+    )
+
+    # --- Retornar JWT ---
     return {
-        "access_token":token,
+        "access_token": access_token,
         "token_type": "bearer"
     }
-
 
 # ============================================ 
 # RUTA PARA VALIDAR JWT
@@ -95,4 +120,4 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
 @router.get("/me")
 def me(user_id: str = Depends(verify_token)):
 
-    return {"user_id": user_id}
+    return {"user_id": user_id} # Te devuelve tu ID
