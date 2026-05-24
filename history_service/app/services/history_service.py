@@ -73,11 +73,52 @@ class HistoryService:
         user_id: int
     ):
 
-        # --- Retornar historial ---
-        return HistoryRepository.get_user_history(
+        # --- Obtener registros del historial ---
+        history_items = HistoryRepository.get_user_history(
             db,
             user_id
         )
+
+        # --- Lista para almacenar pelicula con datos enriquecidos ---
+        enriched_history = []
+
+        # --- Recorrer cada registro del historial ---
+        for item in history_items:
+            
+            # --- Intentar obtener informacion de la pelicula ---
+            try:
+                
+                # --- Solicitar informacion ---
+                response = httpx.get(
+                    f"http://catalog_service:8000/catalog/movies/{item.movie_id}"
+                )
+
+                # --- Parsear respuesta ---
+                movie_data = response.json()
+
+                # --- Agregar datos de la pelicula ---
+                enriched_history.append({
+                    "id": item.id,
+                    "user_id": item.user_id,
+                    "movie_id": item.movie_id,
+                    "movie_title": movie_data["title"],
+                    "watched_at": item.watched_at
+                })
+
+            # --- Capturar errrores de conexion ---
+            except Exception:
+                
+                # --- Agregar datos basicos por si catalogo falla ---
+                enriched_history.append({
+                    "id": item.id,
+                    "user_id": item.user_id,
+                    "movie_id": item.movie_id,
+                    "movie_title": "Unavailable",
+                    "watched_at": item.watched_at
+                })
+
+        # --- Retornar pelicula ---
+        return enriched_history
     
 
     # --- Eliminar registro del historial ---
