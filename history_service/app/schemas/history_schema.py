@@ -23,6 +23,12 @@ class HistoryResponse(BaseModel):
 
     movie_id: int
 
+    movie_title: str
+
+    movie_genre: str
+
+    movie_rating: float
+
     watched_at: datetime
 
     class Config:
