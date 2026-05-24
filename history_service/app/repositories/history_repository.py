@@ -60,5 +60,29 @@ class HistoryRepository:
         return db.query(History).filter(
             History.user_id == user_id
         ).all() # Devolverlos todos.
+    
+
+    # --- Obtener historial por id ---
+    @staticmethod
+    def get_history_by_id(
+        db: Session,
+        history_id: int
+    ):
+
+        return db.query(History).filter(
+            History.id == history_id
+        ).first()
+
+
+    # --- Eliminar historial ---
+    @staticmethod
+    def delete_history(
+        db: Session,
+        history: History
+    ):
+
+        db.delete(history)
+
+        db.commit()
 
 
