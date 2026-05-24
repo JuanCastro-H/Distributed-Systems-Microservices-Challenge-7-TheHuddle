@@ -74,7 +74,7 @@ class HistoryRepository:
         ).first() # Devuelve el primer resultado o None.
 
 
-    # --- Eliminar historial ---
+    # --- Eliminar pelicula del historial ---
     @staticmethod
     def delete_history(
         db: Session,
@@ -82,6 +82,20 @@ class HistoryRepository:
     ):
 
         db.delete(history)
+
+        db.commit()
+
+    # --- Eliminar todo el historial ---
+    @staticmethod
+    def delete_all_history(
+        db: Session,
+        user_id: int
+    ):
+        
+        # --- Buscar y eliminar todos los registros ---
+        db.query(History).filter(
+            History.user_id == user_id
+        ).delete()
 
         db.commit()
 
