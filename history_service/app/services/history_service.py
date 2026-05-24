@@ -59,11 +59,23 @@ class HistoryService:
             )
 
         # --- Registrar pelicula en el historial ---
-        return HistoryRepository.create_history(
+        history = HistoryRepository.create_history(
             db,
             user_id,
             movie_id
         )
+
+        movie_data = response.json()
+
+        return {
+            "id": history.id,
+            "user_id": history.user_id,
+            "movie_id": history.movie_id,
+            "movie_title": movie_data["title"],
+            "movie_genre": movie_data["genre"],
+            "movie_rating": movie_data["rating"],
+            "watched_at": history.watched_at
+        }
 
 
     # --- Obtener historial del usuario ---
