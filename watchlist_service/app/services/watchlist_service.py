@@ -57,12 +57,25 @@ class WatchlistService:
                 detail="Catalog service unavailable"
             )
 
-        # --- Retornar 
-        return WatchlistRepository.create_watchlist_item(
+        # --- Retornar pelicula en watchlist ---
+        watchlist = WatchlistRepository.create_watchlist_item(
             db,
             user_id,
             movie_id
         )
+
+        # --- Parsear json ---
+        movie_data = response.json()
+
+        # --- Retornar pelicula enriquecida ---
+        return {
+            "id": watchlist.id,
+            "user_id": watchlist.user_id,
+            "movie_id": watchlist.movie_id,
+            "movie_title": movie_data["title"],
+            "movie_genre": movie_data["genre"],
+            "movie_rating": movie_data["rating"]
+        }
 
 
     # --- Obtener Watchlist del usuario ---
