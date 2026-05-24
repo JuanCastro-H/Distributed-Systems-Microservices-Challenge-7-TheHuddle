@@ -109,6 +109,41 @@ services:
     volumes:
       - watchlist_postgres_data:/var/lib/postgresql/data
 
+  history_service:
+
+    build:
+      context: ./history_service
+      dockerfile: Dockerfile
+
+    container_name: history_service
+
+    ports:
+      - "8004:8000"
+
+    env_file:
+      - ./history_service/.env
+
+    depends_on:
+      - history_db
+      - catalog_service
+
+
+  history_db:
+
+    image: postgres:16
+
+    container_name: history_db
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: history_db
+
+    ports:
+      - "5436:5432"
+
+    volumes:
+      - history_postgres_data:/var/lib/postgresql/data
 
 
 volumes:
@@ -118,5 +153,7 @@ volumes:
   catalog_postgres_data:
 
   watchlist_postgres_data:
+
+  history_postgres_data:
 
 
